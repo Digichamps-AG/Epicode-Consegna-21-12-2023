@@ -1,0 +1,86 @@
+-- Creazione della tabella DISCO
+CREATE TABLE DISCO (
+    NroSerie INT PRIMARY KEY,
+    TitoloAlbum VARCHAR(100),
+    Anno INT,
+    Prezzo FLOAT
+);
+
+-- Inserimento dati nella tabella DISCO
+INSERT INTO DISCO (NroSerie, TitoloAlbum, Anno, Prezzo)
+VALUES 
+    (1, 'Album 1', 2000, 19.99),
+    (2, 'Album 2', 2023, 24.99),
+    (3, 'Album 3', 2010, 29.99);
+
+-- Creazione della tabella CONTIENE
+CREATE TABLE CONTIENE (
+    NroSerieDisco INT,
+    CodiceReg VARCHAR(50),
+    NroProg INT
+);
+
+-- Inserimento dati nella tabella CONTIENE
+INSERT INTO CONTIENE (NroSerieDisco, CodiceReg, NroProg)
+VALUES 
+    (1, 'ABC123', 1),
+    (2, 'DEF456', 2),
+    (3, 'GHI789', 1);
+
+-- Creazione della tabella ESECUZIONE
+CREATE TABLE ESECUZIONE (
+    CodiceReg VARCHAR(50),
+    TitoloCanz VARCHAR(100),
+    Anno INT
+);
+
+-- Inserimento dati nella tabella ESECUZIONE
+INSERT INTO ESECUZIONE (CodiceReg, TitoloCanz, Anno)
+VALUES 
+    ('ABC123', 'Canzone 1', NULL),
+    ('DEF456', 'Canzone 2', NULL),
+    ('GHI789', 'Canzone 3', 2030);
+
+-- Creazione della tabella AUTORE
+CREATE TABLE AUTORE (
+    Nome VARCHAR(100),
+    TitoloCanzone VARCHAR(100)
+);
+
+-- Inserimento dati nella tabella AUTORE
+INSERT INTO AUTORE (Nome, TitoloCanzone)
+VALUES 
+    ('Dan Ross', 'Canzone 1'),
+    ('Black Jack', 'Canzone 2'),
+    ('Dani Mass', 'Canzone 3');
+
+-- Creazione della tabella CANTANTE
+CREATE TABLE CANTANTE (
+    NomeCantante VARCHAR(100),
+    CodiceReg VARCHAR(50)
+);
+
+-- Inserimento dati nella tabella CANTANTE
+INSERT INTO CANTANTE (NomeCantante, CodiceReg)
+VALUES 
+    ('Dan Ross', 'ABC123'),
+    ('Black Jack', 'DEF456'),
+    ('Dani Mass', 'GHI789');
+
+
+#I cantautori (persone che hanno cantato e scritto la stessa canzone) il cui nome inizia per 'D’;
+SELECT CANTANTE.NomeCantante
+FROM CANTANTE
+JOIN AUTORE ON CANTANTE.NomeCantante=AUTORE.Nome
+WHERE CANTANTE.NomeCantante LIKE "D%";
+
+
+
+SELECT D.TitoloAlbum
+FROM DISCO D
+JOIN CONTIENE C 
+    ON D.NroSerie = C.NroSerieDisco
+LEFT JOIN ESECUZIONE E 
+ON C.CodiceReg = E.CodiceReg
+WHERE E.Anno IS NULL;
+#I cantanti che hanno sempre registrato canzoni come solisti.

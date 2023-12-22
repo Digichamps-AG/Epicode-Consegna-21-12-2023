@@ -1,0 +1,75 @@
+-- Creazione della tabella STUDENTE
+CREATE TABLE STUDENTE (
+    Matricola INT,
+    Nome VARCHAR(100),
+    Citta VARCHAR(100)
+);
+
+-- Inserimento dati nella tabella STUDENTE
+INSERT INTO STUDENTE (Matricola, Nome, Citta)
+VALUES 
+    (1, 'Studente 1', 'Citta1'),
+    (2, 'Studente 2', 'Citta2'),
+    (3, 'Studente 3', 'Citta3');
+
+-- Creazione della tabella CORSO
+CREATE TABLE CORSO (
+    Codice INT,
+    Nome VARCHAR(100),
+    MatricolaDocente INT
+    );
+
+-- Inserimento dati nella tabella CORSO
+INSERT INTO CORSO (Codice, Nome, MatricolaDocente)
+VALUES 
+    (101, 'Corso 1', 1),
+    (102, 'Corso 2', 2),
+    (103, 'Corso 3', 3);
+
+-- Creazione della tabella DOCENTE
+CREATE TABLE DOCENTE (
+    Matricola INT,
+    Nome VARCHAR(100)
+);
+
+-- Inserimento dati nella tabella DOCENTE
+INSERT INTO DOCENTE (Matricola, Nome)
+VALUES 
+    (1, 'Docente 1'),
+    (2, 'Docente 2'),
+    (3, 'Docente 3');
+
+-- Creazione della tabella ESAME
+CREATE TABLE ESAME (
+    Codice INT,
+    MatricolaStudente INT,
+    Data DATE,
+    Voto INT,
+    SettoreScientifico VARCHAR(100)
+);
+
+-- Inserimento dati nella tabella ESAME
+INSERT INTO ESAME (Codice, MatricolaStudente, Data, Voto, SettoreScientifico)
+VALUES 
+    (101, 1, '2023-01-15', 30, 'Scienze'),
+    (102, 2, '2023-02-20', 25, 'Matematica'),
+    (103, 3, '2023-03-25', 28, 'Fisica');
+
+
+#Per ogni studente,
+#visualizzare gli esami sostenuti con voto maggiore di 28 assieme alla matricola dello studente e al nome del docente che ha tenuto il corso.
+SELECT E.Codice, S.Matricola, D.Nome AS Nome_Docente
+FROM STUDENTE S 
+INNER JOIN ESAME E 
+ON S.Matricola = E.MatricolaStudente
+INNER JOIN DOCENTE D 
+ON D.Matricola = S.Matricola
+WHERE E.Voto > 28;
+
+#Per ogni docente, visualizzare il nome, il nome del corso di cui è titolare e il settore scientifico del corso.
+SELECT D.Nome AS Docente, C.Nome AS Corso, E.SettoreScientifico
+FROM DOCENTE D
+INNER JOIN CORSO C 
+ON D.Matricola = C.MatricolaDocente
+INNER JOIN ESAME E 
+ON E.Codice = C.Codice;
